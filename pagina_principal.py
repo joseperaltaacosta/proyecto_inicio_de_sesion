@@ -12,12 +12,9 @@ def main(page: ft.Page):
     page.update()
 
 
-    img = ft.Image(
-        src=f"/IMAGENES/inicio_de_sesion.png",
-        width=225,
-        height=200,
-        fit=ft.ImageFit.CONTAIN,
-    )
+    img = ft.Image(src=f"/IMAGENES/inicio_de_sesion.png",
+    width=225,
+    height=200)
 
     tb1 = ft.TextField(label="Usuario",width=400)
     tb2 = ft.TextField(label="Contraseña", password=True, can_reveal_password=True,width=400)
@@ -26,14 +23,31 @@ def main(page: ft.Page):
 
     def cargar_fichero():
         vDatos=[]
+        f = open("usu.txt","r")
 
+        linea = f.readline()
+        vDatos = linea.split(sep=";")
+
+        f.close()
         return vDatos
+
+    dlg = ft.AlertDialog(title=ft.Text("Usuario correcto"))
+
+    def open_dlg(e):
+        page.dialog = dlg
+        dlg.open = True
+        page.update()
 
 
     def comprobar_login(e):
         usuario=tb1.value
-        contrasseña=tb2.value
+        contraseña=tb2.value
         vDatos = cargar_fichero()
+        print(usuario)
+        print(contraseña)
+        if usuario==vDatos:
+            open_dlg
+
 
 
     boton=ft.ElevatedButton("INICIAR SESION", icon="settings",bgcolor=ft.colors.GREEN_100,on_click=comprobar_login)
