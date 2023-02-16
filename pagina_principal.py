@@ -20,34 +20,24 @@ def main(page: ft.Page):
     tb2 = ft.TextField(label="Contraseña", password=True, can_reveal_password=True,width=400)
     colDatos = ft.Column(controls=[tb1,tb2],spacing=20)
     conDatos = ft.Container(content=colDatos,padding=ft.padding.only(bottom=25))
-
-    def cargar_fichero():
-        vDatos=[]
-        f = open("usu.txt","r")
-
-        linea = f.readline()
-        vDatos = linea.split(sep=";")
-
-        f.close()
-        return vDatos
-
-    dlg = ft.AlertDialog(title=ft.Text("Usuario correcto"))
-
-    def open_dlg(e):
-        page.dialog = dlg
-        dlg.open = True
-        page.update()
+    usuario=tb1.value
+    contraseña=tb2.value 
 
 
     def comprobar_login(e):
-        usuario=tb1.value
-        contraseña=tb2.value
-        vDatos = cargar_fichero()
-        print(usuario)
-        print(contraseña)
-        if usuario==vDatos:
-            open_dlg
-
+        vDatos=[]
+        f = open("usu.txt","r")
+        contador=0
+        for linea in f:
+            l = linea.split(sep=";")
+            vDatos.append(l)
+        print(vDatos)
+        if contador<=3:
+            if vDatos.count(tb1.value)==0:
+                dlg = ft.AlertDialog(title=ft.Text("Usuaruio correcto"))
+                page.dialog = dlg
+                dlg.open = True
+            f.close
 
 
     boton=ft.ElevatedButton("INICIAR SESION", icon="settings",bgcolor=ft.colors.GREEN_100,on_click=comprobar_login)
