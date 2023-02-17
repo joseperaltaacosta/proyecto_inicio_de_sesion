@@ -20,25 +20,38 @@ def main(page: ft.Page):
     tb2 = ft.TextField(label="Contraseña", password=True, can_reveal_password=True,width=400)
     colDatos = ft.Column(controls=[tb1,tb2],spacing=20)
     conDatos = ft.Container(content=colDatos,padding=ft.padding.only(bottom=25))
-    usuario=tb1.value
-    contraseña=tb2.value 
-
 
     def comprobar_login(e):
         vDatos=[]
         f = open("usu.txt","r")
-        contador=0
+        contador=3
         for linea in f:
-            l = linea.split(sep=";")
+            l = linea.replace("\n","")
             vDatos.append(l)
-        print(vDatos)
-        if contador<=3:
-            if vDatos.count(tb1.value)==0:
-                dlg = ft.AlertDialog(title=ft.Text("Usuaruio correcto"))
+
+        if (vDatos.count(tb1.value)>0) and (vDatos.count(tb2.value)>0):
+            dlg = ft.AlertDialog(title=ft.Text("Usuario correcto"))
+            page.dialog = dlg
+            dlg.open = True
+            page.update()
+
+        else:
+            contador=(contador-1)
+            dlg = ft.AlertDialog(title=ft.Text(f"Te quedan {contador} intentos"))
+            page.dialog = dlg
+            dlg.open = True
+            page.update()
+            if contador<3:
+                contador=(contador-1)
+                dlg = ft.AlertDialog(title=ft.Text(f"Te quedan {contador} intentos"))
                 page.dialog = dlg
                 dlg.open = True
-            f.close
-
+                page.update()
+                if contador==3:
+                    dlg = ft.AlertDialog(title=ft.Text("Usuario incorrecto"))
+                    page.dialog = dlg
+                    dlg.open = True
+                    page.update()
 
     boton=ft.ElevatedButton("INICIAR SESION", icon="settings",bgcolor=ft.colors.GREEN_100,on_click=comprobar_login)
 
