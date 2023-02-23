@@ -1,4 +1,5 @@
 import flet as ft
+import time
 
 def main(page: ft.Page):
     page.title="INICIAR SESION"
@@ -54,6 +55,9 @@ def main(page: ft.Page):
                 dlg3.open = True
                 contador=contador+1
                 page.update()
+                time.sleep(3)
+                page.window_close()
+
             cont.value=contador
         page.update()
 
